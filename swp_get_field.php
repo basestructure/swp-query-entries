@@ -7,7 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 class SWP_Get_Custom_Field {
 
 	// MAIN FUNCTION
-	public function swp_gcf_main_func( $params ) {
+	public function swp_gcf_main_func( $params, $content = null ) {
 
 		extract(shortcode_atts(array(
 			'id' 		=> 'id',
@@ -19,11 +19,6 @@ class SWP_Get_Custom_Field {
 		), $params));
 
 		$z = new SWPPostCustomLoop();
-		/*if( $z->swp_validate_param( $class, "class" ) ) {
-			$selector = $class;
-		} else {
-			$selector = "";
-		}*/
 
 		if( $z->swp_validate_param( $id, "id" ) ) {
 			// can be post ID, slug or identifier (custom field)
@@ -84,19 +79,20 @@ class SWP_Get_Custom_Field {
 			$this_id = get_the_ID();
 		}
 
+		// GET CUSTOM FIELD DATA
 		$get_this = get_post_meta( $this_id, $field, TRUE );
+
+		// validate target
+		if( $target == "_blank" ) {
+			$targ = "target='".$target."'";
+		} else {
+			$targ = "";
+		}
 
 		// check if field is image
 		if( wp_attachment_is_image( $get_this ) ) {
 			
 			$this_image = wp_get_attachment_image( $get_this, $size );
-			
-			// validate target
-			if( $target == "_blank" ) {
-				$targ = "target='".$target."'";
-			} else {
-				$targ = "";
-			}
 			
 			if( $link ) {
 				
@@ -111,6 +107,7 @@ class SWP_Get_Custom_Field {
 			}
 			
 			return $a_link;
+
 		} else {
 			
 			if( is_array( $get_this ) ) {
@@ -122,7 +119,24 @@ class SWP_Get_Custom_Field {
 				//var_dump( $get_this );
 				
 			} else {
-				return do_shortcode( $get_this );
+
+				// validate if link 				
+				if( strtolower( $link ) == 'true' ) {
+
+					// use content if indicated
+					if( $content ) {
+						$a_link = "<a href='".$get_this."' ".$targ.">".$content."</a>";
+					} else {
+						// use the link as the name
+						$a_link = "<a href='".$get_this."' ".$targ.">".do_shortcode( $get_this )."</a>";
+					}
+
+				} else {
+					$a_link = $get_this;
+				}
+
+				return $a_link;
+
 			}
 		}
 
