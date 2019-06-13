@@ -107,7 +107,10 @@ class SWP_Get_Custom_Field {
 				$a_link = "<a href='".$get_this."' ".$targ.">".$this_image."</a>";
 
 			} else {
+<<<<<<< HEAD
 
+=======
+>>>>>>> 4af38c48ca721bf6798ae103772da74e3bf1cdec
 				// $link might be a hardcoded URL
 				/*if( $link ) {
 					$a_link = "<a href='".$link."' ".$targ.">".$this_image."</a>";
@@ -115,7 +118,12 @@ class SWP_Get_Custom_Field {
 					// no link specified
 					$a_link = $this_image;
 				//}
+<<<<<<< HEAD
 
+=======
+                
+				$a_link = $this_image;
+>>>>>>> 4af38c48ca721bf6798ae103772da74e3bf1cdec
 			}
 			
 			return $a_link;
@@ -150,6 +158,22 @@ class SWP_Get_Custom_Field {
 				return $a_link;
 
 			}
+		}
+
+	}
+
+	// SHOW VIDEO
+	public function swp_show_video_func( $params, $content = null ) {
+
+		extract(shortcode_atts(array(
+			'id' 		=> 'id',
+			'field'		=> 'field',
+		), $params));
+
+		$var = get_post_meta( $id, $field, TRUE );
+		//var_dump( $var['url'] );
+		if( $var ) {
+			return do_shortcode( '[swp_youtube url="'.$var['url'].'" width="600" height="400" responsive="yes" autoplay="no" mute="no" class=""]' );
 		}
 
 	}
