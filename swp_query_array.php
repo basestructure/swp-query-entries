@@ -2,7 +2,7 @@
 /**
  * Plugin Name: SWP - Query Array
  * Description: Custom querying of entries
- * Version: 1.0
+ * Version: 1.2
  * Author: Jake Almeda
  * Author URI: http://smarterwebpackages.com/
  * Network: true
